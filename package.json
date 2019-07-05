@@ -1,0 +1,47 @@
+{
+  "name": "warefarer",
+  "version": "1.0.0",
+  "description": "WayFarer is a public bus transportation booking server, which enables users to book a seat on a trip",
+  "main": "index.js",
+  "scripts": {
+    "clean": "rm -rf .compiled",
+    "debug": "babel-node ./src --inspect --debug-brk",
+    "start": "nodemon ./src --require babel-polyfill --exec babel-node",
+    "test": "mocha --timeout 10000 --require babel-register --require babel-polyfill --exit ./src/tests/*trip.test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ushnuel/WareFarer.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ushnuel/WareFarer/issues"
+  },
+  "homepage": "https://github.com/ushnuel/WareFarer#readme",
+  "dependencies": {
+    "@babel/core": "^7.4.5",
+    "@babel/preset-stage-3": "^7.0.0",
+    "babel-cli": "^6.26.0",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-stage-3": "^6.24.1",
+    "babel-register": "^6.26.0",
+    "bcrypt": "^3.0.6",
+    "chai": "^4.2.0",
+    "chai-http": "^4.3.0",
+    "debug": "^4.1.1",
+    "dotenv": "^8.0.0",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "mocha": "^6.1.4",
+    "morgan": "^1.9.1",
+    "pg": "^7.11.0"
+  },
+  "devDependencies": {
+    "@babel/preset-env": "^7.4.5",
+    "babel-eslint": "^10.0.2",
+    "nodemon": "^1.19.1"
+  }
+}
