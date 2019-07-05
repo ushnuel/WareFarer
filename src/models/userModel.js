@@ -41,6 +41,7 @@ class UserModel {
   }
 
   static async getUserByEmail({ email, password }) {
+    // sign in method
     const query = `
     SELECT * FROM users
       WHERE

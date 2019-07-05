@@ -6,9 +6,7 @@ class userController {
   static async signUp(req, res, next) {
     try {
       const user = await UserModel.create(req.body);
-      // if (UserModel.emailExist(user.email)) {
-      //   return;
-      // }
+
       const token = await jwtGenerator.generateToken({
         id: user.id,
         email: user.email,
