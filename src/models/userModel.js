@@ -52,7 +52,7 @@ class UserModel {
     if (!user) {
       throw new ErrorHandler('incorrect username or password');
     }
-    const isPassword = bcrypt.compare(password, user.password);
+    const isPassword = await bcrypt.compare(password, user.password);
     if (!isPassword) {
       throw new ErrorHandler('incorrect username or password');
     }
