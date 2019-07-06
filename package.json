@@ -6,8 +6,9 @@
   "scripts": {
     "clean": "rm -rf .compiled",
     "debug": "babel-node ./src --inspect --debug-brk",
+    "pretest": "node --require babel-register --require babel-polyfill ./src/DB/createTables.js",
     "start": "nodemon ./src --require babel-polyfill --exec babel-node",
-    "test": "mocha --timeout 10000 --require babel-register --require babel-polyfill --exit ./src/tests/*trip.test.js"
+    "test": "mocha --timeout 10000 --require babel-register --require babel-polyfill --exit ./src/tests/*.test.js"
   },
   "repository": {
     "type": "git",
