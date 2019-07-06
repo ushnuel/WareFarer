@@ -44,9 +44,9 @@ CREATE TABLE bookings
 );
 `;
 
-const dropTrips = 'DROP TABLE IF EXISTS Trips CASCADE';
+const dropTrips = 'DROP TABLE IF EXISTS trips CASCADE';
 const createTrips = `
-CREATE TABLE Trips
+CREATE TABLE trips
 (
     id bigserial NOT NULL,
     bus_id bigserial NOT NULL,
