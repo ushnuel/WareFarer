@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS users
 
 const dropBus = 'DROP TABLE IF EXISTS buses CASCADE';
 const createBus = `
-CREATE TABLE buses
+CREATE TABLE IF NOT EXISTS buses
 (
     id bigserial NOT NULL,
     number_plate character varying(20) NOT NULL,
@@ -30,7 +30,7 @@ CREATE TABLE buses
 
 const dropBookings = 'DROP TABLE IF EXISTS bookings CASCADE';
 const createBookings = `
-CREATE TABLE bookings
+CREATE TABLE IF NOT EXISTS bookings
 (
      id bigserial NOT NULL,
     user_id bigserial NOT NULL,
@@ -44,15 +44,15 @@ CREATE TABLE bookings
 );
 `;
 
-const dropTrips = 'DROP TABLE IF EXISTS Trips CASCADE';
+const dropTrips = 'DROP TABLE IF EXISTS trips CASCADE';
 const createTrips = `
-CREATE TABLE Trips
+CREATE TABLE IF NOT EXISTS trips
 (
     id bigserial NOT NULL,
     bus_id bigserial NOT NULL,
     origin character varying(100) NOT NULL,
     destination character varying(100) NOT NULL,
-    trip_date timestamp(10) with time zone NOT NULL,
+    trip_date timestamp(6) with time zone NOT NULL,
     fare money NOT NULL,
     status character varying(50),
     CONSTRAINT pkey PRIMARY KEY (id),
@@ -70,8 +70,8 @@ class CreateTables {
 
     await DB.query(createUser);
     await DB.query(createBus);
-    await DB.query(createBookings);
     await DB.query(createTrips);
+    await DB.query(createBookings);
   }
 }
 
