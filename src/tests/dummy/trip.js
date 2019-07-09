@@ -1,5 +1,5 @@
 const Trip = {
-  bus_id: 3,
+  bus_id: 1,
   origin: 'Lagos Island',
   fare: 80000,
   destination: 'USA',
