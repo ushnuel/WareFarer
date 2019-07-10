@@ -94,7 +94,7 @@ describe('USER OR ADMIN BOOKING TESTS', () => {
     });
   });
 
-  describe('User or Admin should see all trips', () => {
+  xdescribe('User or Admin should see all trips', () => {
     it('GET /bookings', (done) => {
       utils
         .get(`${route}/bookings`, booking)
