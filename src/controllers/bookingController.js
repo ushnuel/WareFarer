@@ -31,8 +31,8 @@ export default class BookingController {
   static async delete(req, res, next) {
     try {
       const bId = await BookingModel.get(req.params.bookingId);
-      const booking = await BookingModel.delete(bId);
-      if (booking.user_id !== req.user.id) {
+      await BookingModel.delete(bId.id);
+      if (bId.user_id !== req.user.id) {
         throw new ErrorHandler('Forbidden access! Booking cannot be deleted', 403);
       }
       const data = 'Booking deleted successfully';
