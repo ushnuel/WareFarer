@@ -82,7 +82,7 @@ describe('USER OR ADMIN BOOKING TESTS', () => {
   describe('Throw error if invalid booking id is provided for delete', () => {
     it('DELETE /bookings/<:bookingId>/', (done) => {
       utils
-        .delete(`${route}/bookings/3`, booking)
+        .delete(`${route}/bookings/${newBooking.id + 1}`, booking)
         .then((res) => {
           res.should.have.status(404);
           res.body.should.be.an('object');
