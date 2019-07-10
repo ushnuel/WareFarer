@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "clean": "rm -rf .compiled",
+    "backup": "cp * ../warefarer-backup",
     "debug": "babel-node ./src --inspect --debug-brk",
     "pretest": "node --require babel-register --require babel-polyfill ./src/DB/createTables.js",
     "start": "nodemon ./src --require babel-polyfill --exec babel-node",

@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS users
     first_name character varying(50) NOT NULL,
     last_name character varying(50) NOT NULL,
     password character varying(100) NOT NULL,
-    is_admin boolean DEFAULT TRUE,
+    is_admin boolean DEFAULT FALSE,
     CONSTRAINT p_key PRIMARY KEY (id)
 )
 `;
@@ -32,11 +32,15 @@ const dropBookings = 'DROP TABLE IF EXISTS bookings CASCADE';
 const createBookings = `
 CREATE TABLE IF NOT EXISTS bookings
 (
-     id bigserial NOT NULL,
+    id bigserial NOT NULL,
     user_id bigserial NOT NULL,
+    bus_id bigserial NOT NULL,
     trip_id bigserial NOT NULL,
-    created_on timestamp(6) with time zone,
+    trip_date timestamp(6) with time zone,
+    seat_number integer,
     CONSTRAINT booking_pkey PRIMARY KEY (id),
+    CONSTRAINT busfkey FOREIGN KEY (bus_id)
+        REFERENCES buses (id),
     CONSTRAINT tripfkey FOREIGN KEY (trip_id)
         REFERENCES trips (id),
     CONSTRAINT userfkey FOREIGN KEY (user_id)
@@ -52,9 +56,9 @@ CREATE TABLE IF NOT EXISTS trips
     bus_id bigserial NOT NULL,
     origin character varying(100) NOT NULL,
     destination character varying(100) NOT NULL,
-    trip_date timestamp(6) with time zone NOT NULL,
+    created_on timestamp(6) NOT NULL,
     fare money NOT NULL,
-    status character varying(50),
+    status character varying(50) DEFAULT 'active',    
     CONSTRAINT pkey PRIMARY KEY (id),
     CONSTRAINT busfkey FOREIGN KEY (bus_id)
         REFERENCES buses (id)
