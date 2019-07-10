@@ -67,7 +67,7 @@ describe('USER OR ADMIN BOOKING TESTS', () => {
   describe('User can delete his or her booking', () => {
     it('DELETE /bookings/<:bookingId>/', (done) => {
       utils
-        .delete(`${route}/bookings/${newBooking}`, booking)
+        .delete(`${route}/bookings/${newBooking.id}`, booking)
         .then((res) => {
           res.should.have.status(200);
           res.body.should.be.an('object');
@@ -80,9 +80,9 @@ describe('USER OR ADMIN BOOKING TESTS', () => {
   });
 
   describe('Throw error if invalid booking id is provided for delete', () => {
-    it('POST /bookings/<:bookingId>/', (done) => {
+    it('DELETE /bookings/<:bookingId>/', (done) => {
       utils
-        .delete(`${route}/bookings/237`, booking)
+        .delete(`${route}/bookings/3`, booking)
         .then((res) => {
           res.should.have.status(404);
           res.body.should.be.an('object');
@@ -101,7 +101,6 @@ describe('USER OR ADMIN BOOKING TESTS', () => {
         .then((res) => {
           res.body.should.be.an('object');
           res.should.have.status(200);
-
           const { data, status } = res.body;
           expect(data).to.be.an('array').and.not.empty;
           expect(status).to.be.equal(res.status);
