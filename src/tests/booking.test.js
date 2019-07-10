@@ -64,7 +64,7 @@ describe('USER OR ADMIN BOOKING TESTS', () => {
     });
   });
 
-  xdescribe('User can delete his or her booking', () => {
+  describe('User can delete his or her booking', () => {
     it('DELETE /bookings/<:bookingId>/', (done) => {
       utils
         .delete(`${route}/bookings/${newBooking.id}`, booking)
