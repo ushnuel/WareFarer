@@ -1,9 +1,6 @@
-const Trip = {
-  bus_id: 1,
-  origin: 'Lagos Island',
+const trip = {
+  origin: 'Lagos',
   fare: 80000,
-  destination: 'USA',
-  trip_date: '12/23/2019',
+  destination: 'Port Harcourt',
 };
-
-export default Trip;
+export default trip;

@@ -38,6 +38,14 @@ class jwtGenerator {
       next(error);
     }
   }
+
+  static authorizeAdmin(req, res, next) {
+    if (!req.user.isAdmin) {
+      next(new ErrorHandler('Forbidden access!', 403));
+    } else {
+      next();
+    }
+  }
 }
 
 export default jwtGenerator;
