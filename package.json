@@ -5,9 +5,10 @@
   "main": "index.js",
   "scripts": {
     "debug": "babel-node ./src --inspect --debug-brk",
-    "pretest": "node --require babel-register --require babel-polyfill ./src/DB/createTables.js",
     "start": "NODE_ENV=prod nodemon ./src --require babel-polyfill --exec babel-node",
     "test": "mocha --timeout 10000 --require babel-register --require babel-polyfill --exit ./src/tests/*.test.js"
+    "pretest": "node --require babel-register --require babel-polyfill ./src/DB/createTables.js",
+    "test-coverage": "nyc npm test && nyc report --reporter=text-lcov | coveralls"
   },
   "repository": {
     "type": "git",
@@ -25,9 +26,6 @@
     "@babel/preset-stage-3": "^7.0.0",
     "babel-cli": "^6.26.0",
     "babel-polyfill": "^6.26.0",
-    "babel-preset-env": "^1.7.0",
-    "babel-preset-stage-3": "^6.24.1",
-    "babel-register": "^6.26.0",
     "bcrypt": "^3.0.6",
     "chai": "^4.2.0",
     "chai-http": "^4.3.0",
@@ -35,13 +33,19 @@
     "dotenv": "^8.0.0",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
-    "mocha": "^6.1.4",
     "morgan": "^1.9.1",
     "pg": "^7.11.0"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.4.5",
     "babel-eslint": "^10.0.2",
-    "nodemon": "^1.19.1"
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-stage-3": "^6.24.1",
+    "babel-register": "^6.26.0",
+    "coveralls": "^3.0.4",
+    "lodash": "^4.17.14",
+    "mocha": "^6.1.4",
+    "nodemon": "^1.19.1",
+    "nyc": "^14.1.1"
   }
 }
