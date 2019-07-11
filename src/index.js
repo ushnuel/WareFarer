@@ -1,21 +1,16 @@
 import express, { json, urlencoded } from 'express';
 import morgan from 'morgan';
-import Route from './routes';
+import Routes from './routes';
 import { ErrorHandler, feedbackHandler } from './Handlers';
+import config from './config';
 
 const app = express();
-const PORT = 3000;
 
 app.use(morgan('dev'));
 app.use(json());
 app.use(urlencoded({ extended: false }));
 
-app.use((req, res, next) => {
-  req.user = { id: 'an id' };
-  next();
-});
-
-app.use('/api/v1', Route);
+app.use('/api/v1', Routes);
 
 app.get('/', (req, res) => res.json({
   id: req.user.id,
@@ -28,9 +23,10 @@ app.use('*', (req, res, next) => {
 });
 
 app.use(feedbackHandler.error);
+app.use('port', config.PORT);
 
-app.listen(PORT, () => {
-  console.log('app has started on ', PORT);
+app.listen(config.PORT, () => {
+  console.log('app has started on', config.PORT);
 });
 
 export default app;
