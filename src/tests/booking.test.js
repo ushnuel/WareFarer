@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 /* eslint-disable no-unused-expressions */
 import chai, { should, expect } from 'chai';
 import chaiHttp from 'chai-http';
@@ -64,7 +65,7 @@ describe('USER OR ADMIN BOOKING TESTS', () => {
     });
   });
 
-  describe('User can delete his or her booking', () => {
+  xdescribe('User can delete his or her booking', () => {
     it('DELETE /bookings/<:bookingId>/', (done) => {
       utils
         .delete(`${route}/bookings/${newBooking.id}`, booking)
@@ -94,7 +95,7 @@ describe('USER OR ADMIN BOOKING TESTS', () => {
     });
   });
 
-  xdescribe('User or Admin should see all trips', () => {
+  describe('User or Admin should see all trips', () => {
     it('GET /bookings', (done) => {
       utils
         .get(`${route}/bookings`, booking)
@@ -104,6 +105,24 @@ describe('USER OR ADMIN BOOKING TESTS', () => {
           const { data, status } = res.body;
           expect(data).to.be.an('array').and.not.empty;
           expect(status).to.be.equal(res.status);
+          done();
+        })
+        .catch(err => done(err));
+    });
+  });
+
+  describe('User can change seat number after booking', () => {
+    it('PATCH /bookings/<:bookingId>/seat_number', (done) => {
+      const newSeat = Number(newBooking.seat_number) + 1;
+      const obj = { seat_number: newSeat };
+      utils
+        .patch(`${route}/bookings/${newBooking.id}/seat_number`, obj)
+        .then((res) => {
+          res.body.should.have.status(200);
+          const { data } = res.body;
+          const { seat_number } = data;
+          expect(seat_number).not.eql(booking.seat_number);
+          expect(seat_number).to.eql(newSeat);
           done();
         })
         .catch(err => done(err));
