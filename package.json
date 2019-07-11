@@ -4,11 +4,10 @@
   "description": "WayFarer is a public bus transportation booking server, which enables users to book a seat on a trip",
   "main": "index.js",
   "scripts": {
-    "clean": "rm -rf .compiled",
     "debug": "babel-node ./src --inspect --debug-brk",
+    "start": "NODE_ENV=prod nodemon ./src --require babel-polyfill --exec babel-node",
+    "test": "mocha --timeout 10000 --require babel-register --require babel-polyfill --exit ./src/tests/*.test.js"
     "pretest": "node --require babel-register --require babel-polyfill ./src/DB/createTables.js",
-    "start": "nodemon ./src --require babel-polyfill --exec babel-node",
-    "test": "mocha --timeout 10000 --require babel-register --require babel-polyfill --exit ./src/tests/*.test.js",
     "test-coverage": "nyc npm test && nyc report --reporter=text-lcov | coveralls"
   },
   "repository": {
