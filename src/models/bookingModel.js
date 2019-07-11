@@ -53,4 +53,20 @@ export default class BookingModel {
     }
     return booking;
   }
+
+  static async updateSeat(id, { seat_number }) {
+    if (!Number.isFinite(seat_number) || !seat_number) {
+      throw new ErrorHandler('Invalid seat number', 404);
+    }
+    const query = `
+    UPDATE bookings
+      SET seat_number = $1
+        WHERE id = $2
+        RETURNING *;`;
+    const param = [seat_number, id];
+    const booking = DB.query(query, param).catch(() => {
+      throw new ErrorHandler('Resource not found', 404);
+    });
+    return booking;
+  }
 }
