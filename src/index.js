@@ -1,3 +1,4 @@
+import 'babel-polyfill';
 import express, { json, urlencoded } from 'express';
 import morgan from 'morgan';
 import Routes from './routes';
