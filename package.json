@@ -5,9 +5,11 @@
   "main": "index.js",
   "scripts": {
     "debug": "babel-node ./src --inspect --debug-brk",
-    "start": "NODE_ENV=prod node ./src --require babel-polyfill --exec babel-node",
-    "test": "mocha --timeout 10000 --require babel-register --require babel-polyfill --exit ./src/tests/*.test.js",
-    "pretest": "node --require babel-register --require babel-polyfill ./src/DB/createTables.js",
+    "build": "babel ./src --out-dir ./dist",
+    "start": "node ./dist",
+    "start-dev": "babel-watch ./src",
+    "test": "mocha --timeout 10000 --require @babel/register --require @babel/polyfill --exit ./src/tests/*.test.js",
+    "pretest": "node --require @babel/register --require @babel/polyfill ./src/DB/createTables.js",
     "test-coverage": "nyc npm test && nyc report --reporter=text-lcov | coveralls"
   },
   "repository": {
@@ -23,9 +25,8 @@
   "homepage": "https://github.com/ushnuel/WareFarer#readme",
   "dependencies": {
     "@babel/core": "^7.4.5",
+    "@babel/polyfill": "^7.4.4",
     "@babel/preset-stage-3": "^7.0.0",
-    "babel-cli": "^6.26.0",
-    "babel-polyfill": "^6.26.0",
     "bcrypt": "^3.0.6",
     "chai": "^4.2.0",
     "chai-http": "^4.3.0",
@@ -37,11 +38,11 @@
     "pg": "^7.11.0"
   },
   "devDependencies": {
+    "@babel/cli": "^7.5.0",
     "@babel/preset-env": "^7.4.5",
+    "@babel/register": "^7.4.4",
     "babel-eslint": "^10.0.2",
-    "babel-preset-env": "^1.7.0",
-    "babel-preset-stage-3": "^6.24.1",
-    "babel-register": "^6.26.0",
+    "babel-watch": "^7.0.0",
     "coveralls": "^3.0.4",
     "lodash": "^4.17.14",
     "mocha": "^6.1.4",
