@@ -1,1 +1,1 @@
-web: NODE_ENV=prod node ./src --require babel-polyfill --exec babel-node 
+web: NODE_ENV=prod node ./src/index.js --require babel-polyfill --exec babel-node 
