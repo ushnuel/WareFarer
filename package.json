@@ -6,8 +6,8 @@
   "scripts": {
     "debug": "babel-node ./src --inspect --debug-brk",
     "build": "babel ./src --out-dir ./dist",
-    "start": "node ./dist",
-    "start-dev": "set NODE_ENV=dev & babel-watch ./src",
+    "start": "set NODE_ENV=prod & node ./dist",
+    "start-dev": "set NODE_ENV=dev set DEBUG=http & babel-watch ./src",
     "test": "mocha --timeout 10000 --require @babel/register --require @babel/polyfill --exit ./src/tests/*.test.js",
     "pretest": "node --require @babel/register --require @babel/polyfill ./src/DB/createTables.js",
     "test-coverage": "nyc npm test && nyc report --reporter=text-lcov | coveralls"
