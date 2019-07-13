@@ -116,7 +116,7 @@ describe('USER OR ADMIN BOOKING TESTS', () => {
       const newSeat = Number(newBooking.seat_number) + 1;
       const obj = { seat_number: newSeat };
       utils
-        .patch(`${route}/bookings/${newBooking.id}/seat_number`, obj)
+        .patch(`${route}/bookings/${newBooking.id}/edit/seat_number`, obj)
         .then((res) => {
           res.body.should.have.status(200);
           const { data } = res.body;

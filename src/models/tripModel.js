@@ -3,22 +3,23 @@ import DB from '../DB';
 import { ErrorHandler } from '../Handlers';
 
 export default class TripModel {
-  static async create({
+  static async create(user_id, {
     bus_id, origin, destination, fare,
   }) {
     const created_on = new Date();
     const query = `
     INSERT INTO trips(
+      user_id,
       bus_id,
       origin,
       destination,
       fare,
       created_on
     )
-    VALUES ($1,$2,$3,$4,$5)
+    VALUES ($1,$2,$3,$4,$5,$6)
     RETURNING *
     `;
-    const params = [bus_id, origin, destination, fare, created_on];
+    const params = [user_id, bus_id, origin, destination, fare, created_on];
     const trip = await DB.query(query, params);
     return trip;
   }

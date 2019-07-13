@@ -1,6 +1,8 @@
 import '@babel/polyfill';
-import express, { json, urlencoded } from 'express';
+import express from 'express';
+import bodyParser from 'body-parser';
 import morgan from 'morgan';
+import debug from 'debug';
 import Routes from './routes';
 import { ErrorHandler, feedbackHandler } from './Handlers';
 import config from './config';
@@ -8,8 +10,8 @@ import config from './config';
 const app = express();
 
 app.use(morgan('dev'));
-app.use(json());
-app.use(urlencoded({ extended: false }));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use('/api/v1', Routes);
 
@@ -24,9 +26,9 @@ app.use('*', (req, res, next) => {
 });
 
 app.use(feedbackHandler.error);
-
-app.listen(config.PORT, () => {
-  console.log('app has started on', config.PORT);
+app.set('port', config.PORT);
+app.listen(3000, () => {
+  debug('app has started on', config.PORT);
 });
 
 export default app;

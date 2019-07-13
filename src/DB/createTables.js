@@ -19,12 +19,15 @@ const createBus = `
 CREATE TABLE IF NOT EXISTS buses
 (
     id bigserial NOT NULL,
+    user_id bigserial NOT NULL,
     number_plate character varying(20) NOT NULL,
     manufacturer character varying(30) NOT NULL,
     model character varying(50) NOT NULL,
     year character varying(15) NOT NULL,
     capacity integer NOT NULL,
-    CONSTRAINT bus_key PRIMARY KEY (id)
+    CONSTRAINT bus_key PRIMARY KEY (id),
+    CONSTRAINT userfkey FOREIGN KEY (user_id)
+        REFERENCES users (id)
 );
 `;
 
@@ -53,6 +56,7 @@ const createTrips = `
 CREATE TABLE IF NOT EXISTS trips
 (
     id bigserial NOT NULL,
+    user_id bigserial NOT NULL,
     bus_id bigserial NOT NULL,
     origin character varying(100) NOT NULL,
     destination character varying(100) NOT NULL,
@@ -61,7 +65,9 @@ CREATE TABLE IF NOT EXISTS trips
     status character varying(50) DEFAULT 'active',    
     CONSTRAINT pkey PRIMARY KEY (id),
     CONSTRAINT busfkey FOREIGN KEY (bus_id)
-        REFERENCES buses (id)
+        REFERENCES buses (id),
+    CONSTRAINT userfkey FOREIGN KEY (user_id)
+        REFERENCES users (id)
 );
 `;
 
