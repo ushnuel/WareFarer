@@ -16,7 +16,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use('/api/v1', Routes);
 
 app.get('/', (req, res) => res.json({
-  id: req.user.id,
   message: 'Welcome to Warefarer server API',
 }));
 
