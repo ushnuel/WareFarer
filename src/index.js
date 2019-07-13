@@ -26,7 +26,7 @@ app.use('*', (req, res, next) => {
 
 app.use(feedbackHandler.error);
 app.set('port', config.PORT);
-app.listen(3000, () => {
+app.listen(config.PORT, () => {
   debug('app has started on', config.PORT);
 });
 
