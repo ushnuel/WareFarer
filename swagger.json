@@ -1,0 +1,491 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Warefarer application API",
+    "description": "On warefarer, users can book trips using available buses. More info on [github](https://github.com/ushnuel/WareFarer)",
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  },
+  "basePath": "/api/v1",
+  "developer": [
+    {
+      "name": "Emmanuel chinazom",
+      "email": "ezeemmanuel2010@gmail.com"
+    }
+  ],
+  "servers": [
+    {
+      "type": "Production server",
+      "url": "https://warefarer.herokuapp.com/api/v1"
+    },
+    {
+      "type": "Development server",
+      "url": "http://localhost:3000/api/v1"
+    }
+  ],
+  "paths": {
+    "/auth/signup": {
+      "post": {
+        "tags": ["users"],
+        "description": "Create new user in system",
+        "produces": ["application/json"],
+        "responses": [
+          {
+            "201": {
+              "description": "New user is successfully created",
+              "schema": {
+                "$ref": "#/definitions/Users"
+              }
+            },
+            "500": {
+              "description": "unexpected error occurred",
+              "schema": {
+                "$ref": "#/definitions/500ErrorResponse"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "/auth/signin": {
+      "post": {
+        "tags": ["users"],
+        "description": "Sign in user",
+        "responses": [
+          {
+            "200": {
+              "description": "successfully signed in",
+              "schema": {
+                "$ref": "#/definitions/Users"
+              }
+            },
+            "404": {
+              "description": "email or password incorrect",
+              "schema": {
+                "$ref": "#/definitions/404ErrorResponse"
+              }
+            }
+          }
+        ],
+        "parameter": [
+          {
+            "name": "usher",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/Users"
+            }
+          }
+        ]
+      }
+    },
+    "/bookings": {
+      "post": {
+        "tags": ["bookings"],
+        "description": "user create a new booking",
+        "produces": ["application/json"],
+        "responses": [
+          {
+            "201": {
+              "status": "success",
+              "description": "Booking is successfully created",
+              "schema": {
+                "$ref": "#/definitions/Bookings"
+              }
+            },
+            "500": {
+              "description": "unexpected error occurred",
+              "schema": {
+                "$ref": "#/definitions/500ErrorResponse"
+              }
+            },
+            "401": {
+              "description": "unathorized access",
+              "schema": {
+                "$ref": "#/definitions/401ErrorResponse"
+              }
+            }
+          }
+        ]
+      },
+      "get": {
+        "tags": ["bookings"],
+        "description": "Admin can see all bookings while users can only see their bookings",
+        "produces": ["application/json"],
+        "responses": [
+          {
+            "200": {
+              "description": "Bookings successfully retrieved",
+              "schema": {
+                "$ref": "#/definitions/Bookings"
+              },
+              "500": {
+                "description": "unexpected error occurred",
+                "schema": {
+                  "$ref": "#/definitions/500ErrorResponse"
+                }
+              },
+              "401": {
+                "description": "unathorized access",
+                "schema": {
+                  "$ref": "#/definitions/401ErrorResponse"
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "/bookings/{bookingId}/edit/seat_number": {
+      "patch": {
+        "tags": ["bookings"],
+        "description": "change seat number after booking",
+        "produces": ["application/json"],
+        "responses": [
+          {
+            "401": {
+              "description": "unathorized access",
+              "schema": {
+                "$ref": "#/definitions/401ErrorResponse"
+              }
+            },
+            "500": {
+              "description": "unexpected error occurred",
+              "schema": {
+                "$ref": "#/definitions/500ErrorResponse"
+              }
+            },
+            "404": {
+              "description": "booking not found",
+              "schema": {
+                "$ref": "#/definitions/404ErrorResponse"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "/bookings/{bookingId}/delete": {
+      "delete": {
+        "tags": ["bookings"],
+        "description": "user delete his/her booking",
+        "produces": ["application/json"],
+        "responses": [
+          {
+            "404": {
+              "description": "booking not found",
+              "schema": {
+                "$ref": "#/definitions/404ErrorResponse"
+              }
+            },
+            "200": {
+              "description": "booking successfully deleted",
+              "schema": {
+                "$ref": "#/definitions/Bookings"
+              },
+              "500": {
+                "description": "unexpected error occurred",
+                "schema": {
+                  "$ref": "#/definitions/500ErrorResponse"
+                }
+              },
+              "401": {
+                "description": "unathorized access",
+                "schema": {
+                  "$ref": "#/definitions/401ErrorResponse"
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "/trips": {
+      "post": {
+        "tags": ["trips"],
+        "description": "Admin creates a new trip",
+        "produces": ["application/json"],
+        "responses": [
+          {
+            "200": {
+              "description": "trip successfully created",
+              "schema": {
+                "$ref": "#/definitions/Trips"
+              }
+            },
+            "500": {
+              "description": "unexpected error occurred",
+              "schema": {
+                "$ref": "#/definitions/500ErrorResponse"
+              }
+            },
+            "404": {
+              "description": "bus is not selected",
+              "schema": {
+                "$ref": "#/definitions/404ErrorResponse"
+              }
+            },
+            "401": {
+              "description": "unathorized access",
+              "schema": {
+                "$ref": "#/definitions/401ErrorResponse"
+              }
+            }
+          }
+        ]
+      },
+      "get": {
+        "tags": ["trips"],
+        "description": "Admin and users can see all trips",
+        "produces": ["application/json"],
+        "responses": [
+          {
+            "200": {
+              "description": "trip successfully created",
+              "schema": {
+                "$ref": "#/definitions/Trips"
+              }
+            },
+            "500": {
+              "description": "unexpected error occurred",
+              "schema": {
+                "$ref": "#/definitions/500ErrorResponse"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "/trips/{tripId}": {
+      "patch": {
+        "tags": ["trips"],
+        "description": "Admin cancel a trip",
+        "produces": ["application/json"],
+        "responses": [
+          {
+            "200": {
+              "description": "trip successfully cancelled",
+              "schema": {
+                "$ref": "#/definitions/Trips"
+              }
+            },
+            "500": {
+              "description": "unexpected error occurred",
+              "schema": {
+                "$ref": "#/definitions/500ErrorResponse"
+              }
+            },
+            "404": {
+              "description": "booking not found",
+              "schema": {
+                "$ref": "#/definitions/404ErrorResponse"
+              }
+            },
+            "401": {
+              "description": "unathorized access",
+              "schema": {
+                "$ref": "#/definitions/401ErrorResponse"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "/bus": {
+      "post": {
+        "description": "Admin creates a new bus",
+        "tags": ["bus"],
+        "produces": ["application/json"],
+        "responses": [
+          {
+            "200": {
+              "description": "bus successfully created",
+              "schema": {
+                "$ref": "#/definitions/Bus"
+              }
+            },
+            "500": {
+              "description": "unexpected error occurred",
+              "schema": {
+                "$ref": "#/definitions/500ErrorResponse"
+              }
+            },
+            "401": {
+              "description": "unathorized access",
+              "schema": {
+                "$ref": "#/definitions/401ErrorResponse"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "definitions": {
+      "Users": {
+        "type": "object",
+        "required": ["email", "password"],
+        "properties": {
+          "id": {
+            "uniqueItems": true
+          },
+          "email": {
+            "type": "string",
+            "uniqueItems": true,
+            "example": "ezeemmanuel2010@gmail.com"
+          },
+          "last_name": {
+            "type": "string",
+            "example": "Chinazom"
+          },
+          "first_name": {
+            "type": "string",
+            "example": "Emmanuel"
+          },
+          "is_admin": {
+            "type": "boolean",
+            "default": false
+          }
+        }
+      },
+      "Bookings": {
+        "type": "object",
+        "required": ["id", "bus_id", "trip_id", "user_id", "trip_date"],
+        "properties": {
+          "id": {
+            "uniqueItems": true
+          },
+          "bus_id": {
+            "type": "foreign key"
+          },
+          "trip_id": {
+            "type": "foreign key"
+          },
+          "user_id": {
+            "type": "foreign key"
+          },
+          "trip_date": {
+            "type": "timestamp with time zone",
+            "example": "12/7/2019"
+          },
+          "seat_number": {
+            "type": "integer",
+            "example": 12
+          }
+        }
+      },
+      "Trips": {
+        "type": "object",
+        "required": [
+          "id",
+          "bus_id",
+          "user_id",
+          "fare",
+          "origin",
+          "destination"
+        ],
+        "properties": {
+          "id": {
+            "uniqueItems": true
+          },
+          "bus_id": {
+            "type": "foreign key"
+          },
+          "user_id": {
+            "type": "foreign key"
+          },
+          "fare": {
+            "type": "integer",
+            "example": 8000
+          },
+          "origin": {
+            "type": "string",
+            "example": "Lagos"
+          },
+          "destination": {
+            "type": "string",
+            "example": "Enugu"
+          }
+        }
+      },
+      "Bus": {
+        "type": "object",
+        "required": ["id", "user_id"],
+        "properties": {
+          "id": {
+            "uniqueItems": true
+          },
+          "user_id": {
+            "type": "foreign key"
+          },
+          "model": {
+            "type": "string",
+            "example": "Mini Bus"
+          },
+          "manufacturer": {
+            "type": "string",
+            "example": "Toyota"
+          },
+          "year": {
+            "type": "string",
+            "example": "2016"
+          },
+          "capacity": {
+            "type": "integer",
+            "example": 16
+          },
+          "number_plate": {
+            "type": "string",
+            "example": "LG1888264IK"
+          },
+          "status": {
+            "type": "string",
+            "default": "active",
+            "enum": ["active", "cancelled"]
+          }
+        }
+      },
+      "404ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "500ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "401ErrorResponse": {
+          "type": "object",
+          "properties": {
+            "code": {
+              "type": "string"
+            },
+            "message": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "security": {
+        "user_auth": {
+          "type": "apiKey",
+          "name": "token",
+          "in": "header"
+        }
+      }
+    }
+  }
+}

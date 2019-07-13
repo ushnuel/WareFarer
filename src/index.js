@@ -3,9 +3,11 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import morgan from 'morgan';
 import debug from 'debug';
+import swaggerUiExpress from 'swagger-ui-express';
 import Routes from './routes';
 import { ErrorHandler, feedbackHandler } from './Handlers';
 import config from './config';
+import swaggerJson from '../swagger.json';
 
 const app = express();
 
@@ -14,13 +16,13 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use('/api/v1', Routes);
-
+app.use('/api-docs', swaggerUiExpress.serve, swaggerUiExpress.setup(swaggerJson));
 app.get('/', (req, res) => res.json({
-  message: 'Welcome to Warefarer server API',
+  message: 'Welcome to Warefarer server API homepage',
 }));
 
 app.use('*', (req, res, next) => {
-  const error = new ErrorHandler('Not Found', 404);
+  const error = new ErrorHandler('Page Not Found', 404);
   next(error);
 });
 
