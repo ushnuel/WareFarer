@@ -6,7 +6,7 @@ const config = {};
 
 switch (process.env.NODE_ENV) {
   case 'dev':
-    config.PORT = process.env.PORT;
+    config.PORT = process.env.DEV_PORT;
     config.DB = process.env.DB;
     break;
 

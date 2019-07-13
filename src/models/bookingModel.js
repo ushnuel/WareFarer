@@ -30,16 +30,17 @@ export default class BookingModel {
     return bookings;
   }
 
-  static async delete(id) {
+  static async delete({ id, user_id }) {
     if (!id) {
       throw new ErrorHandler('Invalid id', 404);
     }
     const query = `
     DELETE FROM bookings
-      WHERE id = $1;`;
-    const param = [id];
-    const booking = await DB.query(query, param);
-    return booking;
+      WHERE id = $1 AND user_id = $2;`;
+    const param = [id, user_id];
+    await DB.query(query, param).catch(() => {
+      throw new ErrorHandler('Forbidden access', 403);
+    });
   }
 
   static async get(id) {
@@ -49,23 +50,20 @@ export default class BookingModel {
     const param = [id];
     const booking = await DB.query(query, param);
     if (!booking) {
-      throw new ErrorHandler('fatal! Booking not found', 404);
+      throw new ErrorHandler(`Error! Booking with id ${id} not found`, 404);
     }
     return booking;
   }
 
-  static async updateSeat(id, { seat_number }) {
-    if (!Number.isFinite(seat_number) || !seat_number) {
-      throw new ErrorHandler('Invalid seat number', 404);
-    }
+  static async updateSeat(id, user_id, { seat_number }) {
     const query = `
     UPDATE bookings
       SET seat_number = $1
-        WHERE id = $2
+        WHERE id = $2 AND user_id = $3
         RETURNING *;`;
-    const param = [seat_number, id];
+    const param = [seat_number, id, user_id];
     const booking = DB.query(query, param).catch(() => {
-      throw new ErrorHandler('Resource not found', 404);
+      throw new ErrorHandler('Forbidden access', 403);
     });
     return booking;
   }

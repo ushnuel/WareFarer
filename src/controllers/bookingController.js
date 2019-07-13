@@ -31,12 +31,9 @@ export default class BookingController {
   static async delete(req, res, next) {
     try {
       const booking = await BookingModel.get(req.params.bookingId);
-      await BookingModel.delete(booking.id);
-      if (booking.user_id !== req.user.id) {
-        throw new ErrorHandler('Forbidden access! Booking cannot be deleted', 403);
-      }
+      await BookingModel.delete(booking);
       const data = 'Booking deleted successfully';
-      feedbackHandler.message(res, data, 200);
+      feedbackHandler.message(res, data);
     } catch (error) {
       next(error);
     }
@@ -44,10 +41,7 @@ export default class BookingController {
 
   static async changeSeat(req, res, next) {
     try {
-      const booking = await BookingModel.updateSeat(req.params.bookingId, req.body);
-      if (booking.user_id !== req.user.id) {
-        throw new ErrorHandler('Forbidden access', 403);
-      }
+      const booking = await BookingModel.updateSeat(req.params.bookingId, req.user.id, req.body);
       const data = { ...booking };
       feedbackHandler.message(res, data);
     } catch (error) {

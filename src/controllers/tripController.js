@@ -1,10 +1,13 @@
 import { TripModel } from '../models';
-import { feedbackHandler } from '../Handlers';
+import { feedbackHandler, ErrorHandler } from '../Handlers';
 
 export default class tripController {
   static async create(req, res, next) {
     try {
-      const trip = await TripModel.create(req.body);
+      if (!req.body.bus_id) {
+        throw new ErrorHandler('No bus selected', 400);
+      }
+      const trip = await TripModel.create(req.user.id, req.body);
       const data = { ...trip };
       feedbackHandler.message(res, data, 201);
     } catch (error) {
