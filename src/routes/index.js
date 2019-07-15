@@ -6,9 +6,9 @@ import bookingRoute from './bookingRoutes';
 import jwtGenerator from '../middleware/jwtGenerator';
 
 const router = express.Router();
-router.use('/auth', authRoute);
-router.use('/trips', jwtGenerator.authorize, tripRoute);
-router.use('/bus', jwtGenerator.authorize, busRoute);
-router.use('/bookings', jwtGenerator.authorize, bookingRoute);
+router.use('/api/v1/auth', authRoute);
+router.use('/api/v1/trips', jwtGenerator.authorize, tripRoute);
+router.use('/api/v1/bus', jwtGenerator.authorize, busRoute);
+router.use('/api/v1/bookings', jwtGenerator.authorize, bookingRoute);
 
 export default router;

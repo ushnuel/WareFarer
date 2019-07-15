@@ -13,7 +13,7 @@ app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.use('/api/v1', Routes);
+app.use(Routes);
 
 app.get('/', (req, res) => res.json({
   message: 'Welcome to Warefarer server API',
