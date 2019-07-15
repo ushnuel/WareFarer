@@ -1,6 +1,4 @@
-import dotenv from 'dotenv';
-
-dotenv.config();
+import 'dotenv/config';
 
 const config = {};
 
@@ -12,7 +10,7 @@ switch (process.env.NODE_ENV) {
 
   case 'prod':
     config.PORT = process.env.PORT;
-    config.DB = process.env.DB;
+    config.DB = process.env.DATABASE_URL;
     break;
 
   default:

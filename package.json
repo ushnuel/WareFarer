@@ -6,8 +6,8 @@
   "scripts": {
     "debug": "babel-node ./src --inspect --debug-brk",
     "build": "babel ./src --out-dir ./dist",
-    "start": "node ./dist",
-    "start-dev": "babel-watch ./src",
+    "start": "set NODE_ENV=prod & node ./dist",
+    "start-dev": "set NODE_ENV=dev set DEBUG=http & babel-watch ./src",
     "test": "mocha --timeout 10000 --require @babel/register --require @babel/polyfill --exit ./src/tests/*.test.js",
     "pretest": "node --require @babel/register --require @babel/polyfill ./src/DB/createTables.js",
     "test-coverage": "nyc npm test && nyc report --reporter=text-lcov | coveralls"
@@ -36,7 +36,8 @@
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
     "morgan": "^1.9.1",
-    "pg": "^7.11.0"
+    "pg": "^7.11.0",
+    "swagger-ui-express": "^4.0.7"
   },
   "devDependencies": {
     "@babel/cli": "^7.5.0",

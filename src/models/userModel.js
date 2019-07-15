@@ -48,13 +48,15 @@ class UserModel {
         email = $1`;
 
     const param = [email];
-    const user = await DB.query(query, param);
+    const user = await DB.query(query, param).catch(() => {
+      throw new ErrorHandler('User not found', 404);
+    });
     if (!user) {
-      throw new ErrorHandler('incorrect username or password');
+      throw new ErrorHandler('incorrect username or password', 404);
     }
     const isPassword = await bcrypt.compare(password, user.password);
     if (!isPassword) {
-      throw new ErrorHandler('incorrect username or password');
+      throw new ErrorHandler('incorrect username or password', 400);
     }
     return UserModel.exclude(user);
   }
