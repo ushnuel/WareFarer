@@ -14,7 +14,7 @@ should();
 
 const { user } = new User();
 const utils = new Utils(server);
-const route = '/api/v1/';
+const route = '/api/v1';
 let newBooking = {};
 
 describe('USER OR ADMIN BOOKING TESTS', () => {
@@ -65,15 +65,17 @@ describe('USER OR ADMIN BOOKING TESTS', () => {
     });
   });
 
-  xdescribe('User can delete his or her booking', () => {
+  describe('User can delete his or her booking', () => {
     it('DELETE /bookings/<:bookingId>/', (done) => {
       utils
         .delete(`${route}/bookings/${newBooking.id}`, booking)
         .then((res) => {
           res.should.have.status(200);
           res.body.should.be.an('object');
-          const { status } = res.body;
+          const { status, data } = res.body;
           expect(status).to.equal(res.status);
+          const { message } = data;
+          expect(message).to.be.eql('Booking deleted successfully');
           done();
         })
         .catch(err => done(err));
@@ -111,12 +113,12 @@ describe('USER OR ADMIN BOOKING TESTS', () => {
     });
   });
 
-  describe('User can change seat number after booking', () => {
+  xdescribe('User can change seat number after booking', () => {
     it('PATCH /bookings/<:bookingId>/seat_number', (done) => {
       const newSeat = Number(newBooking.seat_number) + 1;
       const obj = { seat_number: newSeat };
       utils
-        .patch(`${route}/bookings/${newBooking.id}/edit/seat_number`, obj)
+        .patch(`${route}/bookings/${newBooking.id}`, obj)
         .then((res) => {
           res.body.should.have.status(200);
           const { data } = res.body;

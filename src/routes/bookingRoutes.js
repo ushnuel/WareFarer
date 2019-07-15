@@ -5,6 +5,6 @@ const router = express.Router();
 
 router.post('/', BookingController.create);
 router.get('/', BookingController.get);
-router.delete('/:bookingId/delete', BookingController.delete);
-router.patch('/:bookingId/edit/seat_number', BookingController.changeSeat);
+router.delete('/:bookingId', BookingController.delete);
+router.patch('/:bookingId', BookingController.changeSeat);
 export default router;

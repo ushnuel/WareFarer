@@ -4,6 +4,12 @@ import { feedbackHandler, ErrorHandler } from '../Handlers';
 export default class BookingController {
   static async create(req, res, next) {
     try {
+      if (!req.body.bus_id) {
+        throw new ErrorHandler('No bus has been selected', 400);
+      }
+      if (!req.body.trip_id) {
+        throw new ErrorHandler('Trip field not selected', 400);
+      }
       const booking = await BookingModel.create(req.user.id, req.body);
       const data = { ...booking };
       feedbackHandler.message(res, data, 201);
@@ -31,8 +37,12 @@ export default class BookingController {
   static async delete(req, res, next) {
     try {
       const booking = await BookingModel.get(req.params.bookingId);
-      await BookingModel.delete(booking);
-      const data = 'Booking deleted successfully';
+      if (booking.user_id !== req.user.id) {
+        throw new ErrorHandler('Forbidden access', 403);
+      }
+      await BookingModel.delete(req.params.bookingId);
+      const message = 'Booking deleted successfully';
+      const data = { message };
       feedbackHandler.message(res, data);
     } catch (error) {
       next(error);

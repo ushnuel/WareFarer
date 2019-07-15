@@ -67,7 +67,8 @@ describe('ADMIN CREATE AND GET TRIP(S) TEST', () => {
           res.body.should.status(200);
           const { status, data } = res.body;
           expect(status).to.be.eql(res.status);
-          expect(data).to.include('Trip cancelled successfully');
+          const { message } = data;
+          expect(message).to.be.eql('Trip cancelled successfully');
           done();
         })
         .catch(err => done(err));
