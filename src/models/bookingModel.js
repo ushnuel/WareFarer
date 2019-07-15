@@ -30,17 +30,18 @@ export default class BookingModel {
     return bookings;
   }
 
-  static async delete({ id, user_id }) {
+  static async delete(id) {
     if (!id) {
       throw new ErrorHandler('Invalid id', 404);
     }
     const query = `
     DELETE FROM bookings
-      WHERE id = $1 AND user_id = $2;`;
-    const param = [id, user_id];
-    await DB.query(query, param).catch(() => {
-      throw new ErrorHandler('Forbidden access', 403);
+      WHERE id = $1`;
+    const param = [id];
+    const booking = await DB.query(query, param).catch(() => {
+      throw new ErrorHandler('Resources not found', 404);
     });
+    return booking;
   }
 
   static async get(id) {

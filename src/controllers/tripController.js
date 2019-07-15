@@ -18,7 +18,8 @@ export default class tripController {
   static async cancel(req, res, next) {
     try {
       await TripModel.cancel(req.params.tripId);
-      const data = 'Trip cancelled successfully';
+      const message = 'Trip cancelled successfully';
+      const data = { message };
       feedbackHandler.message(res, data);
     } catch (error) {
       next(error);
