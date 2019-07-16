@@ -9,6 +9,6 @@ const router = express.Router();
 router.use('/api/v1/auth', authRoute);
 router.use('/api/v1/trips', jwtGenerator.authorize, jwtGenerator.authorizeAdmin, tripRoute);
 router.use('/api/v1/bus', jwtGenerator.authorize, jwtGenerator.authorizeAdmin, busRoute);
-router.use('/api/v1/bookings', jwtGenerator.authorize, bookingRoute);
+router.use('/api/v1/bookings', jwtGenerator.authorize, jwtGenerator.authorizeAdmin, bookingRoute);
 
 export default router;
