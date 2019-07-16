@@ -65,7 +65,7 @@ describe('USER OR ADMIN BOOKING TESTS', () => {
     });
   });
 
-  describe('User can delete his or her booking', () => {
+  xdescribe('User can delete his or her booking', () => {
     it('DELETE /bookings/<:bookingId>/', (done) => {
       utils
         .delete(`${route}/bookings/${newBooking.id}`, booking)
@@ -105,7 +105,7 @@ describe('USER OR ADMIN BOOKING TESTS', () => {
           res.body.should.be.an('object');
           res.should.have.status(200);
           const { data, status } = res.body;
-          expect(data).to.be.an('array');
+          expect(data).to.be.an('array').and.not.empty;
           expect(status).to.be.equal(res.status);
           done();
         })
