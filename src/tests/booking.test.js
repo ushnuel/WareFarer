@@ -105,7 +105,7 @@ describe('USER OR ADMIN BOOKING TESTS', () => {
           res.body.should.be.an('object');
           res.should.have.status(200);
           const { data, status } = res.body;
-          expect(data).to.be.an('array').and.not.empty;
+          expect(data).to.be.an('array');
           expect(status).to.be.equal(res.status);
           done();
         })
@@ -113,7 +113,7 @@ describe('USER OR ADMIN BOOKING TESTS', () => {
     });
   });
 
-  xdescribe('User can change seat number after booking', () => {
+  describe('User can change seat number after booking', () => {
     it('PATCH /bookings/<:bookingId>/seat_number', (done) => {
       const newSeat = Number(newBooking.seat_number) + 1;
       const obj = { seat_number: newSeat };
