@@ -4,7 +4,6 @@ import { feedbackHandler, ErrorHandler } from '../Handlers';
 export default class BookingController {
   static async create(req, res, next) {
     try {
-      console.log('REQ BODY', req.body);
       if (!req.body.bus_id) {
         throw new ErrorHandler('No bus has been selected', 400);
       }
@@ -12,7 +11,6 @@ export default class BookingController {
         throw new ErrorHandler('Trip field not selected', 400);
       }
       const booking = await BookingModel.create(req.user.id, req.body);
-      console.log('BOOKING', booking);
       const data = { ...booking };
       feedbackHandler.message(res, data, 201);
     } catch (error) {

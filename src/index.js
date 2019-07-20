@@ -2,12 +2,13 @@ import '@babel/polyfill';
 import express from 'express';
 import bodyParser from 'body-parser';
 import morgan from 'morgan';
-import debug from 'debug';
 import swaggerUiExpress from 'swagger-ui-express';
 import Routes from './routes';
 import { ErrorHandler, feedbackHandler } from './Handlers';
 import config from './config';
 import swaggerJson from '../swagger.json';
+
+const debug = require('debug')('http');
 
 const app = express();
 
