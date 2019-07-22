@@ -18,22 +18,25 @@ export default class BookingModel {
     RETURNING *;
     `;
     const params = [user_id, trip_id, bus_id, seat_number, trip_date];
-    const booking = await DB.query(query, params);
+    const booking = await DB.query(query, params).catch((err) => {
+      throw new ErrorHandler(err.message, 400);
+    });
     return booking;
   }
 
-  static async getAll() {
+  static async getAll(user_id) {
     const query = `
     SELECT * from bookings
+      WHERE user_id = $1
     `;
-    const bookings = await DB.query(query, '', true);
+    const param = [user_id];
+    const bookings = await DB.query(query, param, true).catch(() => {
+      throw new ErrorHandler('No records found', 404);
+    });
     return bookings;
   }
 
   static async delete(id) {
-    if (!id) {
-      throw new ErrorHandler('Invalid id', 404);
-    }
     const query = `
     DELETE FROM bookings
       WHERE id = $1`;

@@ -1,15 +1,16 @@
-import { BookingModel } from '../models';
-import { feedbackHandler, ErrorHandler } from '../Handlers';
+import { validationResult } from 'express-validator';
+import { BookingModel, BusModel, TripModel } from '../models';
+import { feedbackHandler, ErrorHandler, validationError } from '../Handlers';
 
 export default class BookingController {
   static async create(req, res, next) {
     try {
-      if (!req.body.bus_id) {
-        throw new ErrorHandler('No bus has been selected', 400);
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        validationError(errors.errors);
       }
-      if (!req.body.trip_id) {
-        throw new ErrorHandler('Trip field not selected', 400);
-      }
+      await BusModel.get(req.body);
+      await TripModel.get(req.body.trip_id);
       const booking = await BookingModel.create(req.user.id, req.body);
       const data = { ...booking };
       feedbackHandler.message(res, data, 201);
@@ -19,14 +20,8 @@ export default class BookingController {
   }
 
   static async get(req, res, next) {
-    const { id, isAdmin } = req.user;
     try {
-      const bookings = await BookingModel.getAll();
-      bookings.forEach((booking) => {
-        if (isAdmin === false && id !== booking.user_id) {
-          throw new ErrorHandler('Forbidden access', 403);
-        }
-      });
+      const bookings = await BookingModel.getAll(req.user.id);
       const data = [...bookings];
       feedbackHandler.message(res, data);
     } catch (error) {
@@ -51,6 +46,10 @@ export default class BookingController {
 
   static async changeSeat(req, res, next) {
     try {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        validationError(errors.errors);
+      }
       const booking = await BookingModel.updateSeat(req.params.bookingId, req.user.id, req.body);
       const data = { ...booking };
       feedbackHandler.message(res, data);

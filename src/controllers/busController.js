@@ -1,11 +1,13 @@
-import { feedbackHandler, ErrorHandler } from '../Handlers';
+import { validationResult } from 'express-validator';
+import { feedbackHandler, validationError } from '../Handlers';
 import BusModel from '../models/busModel';
 
 class busController {
   static async create(req, res, next) {
     try {
-      if (!req.user.id) {
-        throw new ErrorHandler('Bad request', 404);
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        validationError(errors.errors);
       }
       const bus = await BusModel.create(req.user.id, req.body);
       const data = { ...bus };
