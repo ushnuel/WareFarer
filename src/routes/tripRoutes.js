@@ -1,15 +1,10 @@
 import express from 'express';
 import tripController from '../controllers/tripController';
-import jwtGenerator from '../middleware/jwtGenerator';
+import { Validation } from '../middleware';
 
 const router = express.Router();
 
-router.post('', jwtGenerator.authorizeAdmin, tripController.create);
-router.get('', tripController.getAll);
-router.patch(
-  '/:tripId',
-  jwtGenerator.authorize,
-  jwtGenerator.authorizeAdmin,
-  tripController.cancel,
-);
+router.post('/', Validation.tripValidator('create'), tripController.create);
+router.get('/', tripController.getAll);
+router.patch('/:tripId', tripController.cancel);
 export default router;

@@ -1,12 +1,17 @@
+import { validationResult } from 'express-validator';
 import { UserModel } from '../models';
-import { feedbackHandler } from '../Handlers';
-import jwtGenerator from '../middleware/jwtGenerator';
+import { feedbackHandler, validationError } from '../Handlers';
+import { jwtGenerator } from '../middleware';
 
 class userController {
   static async signUp(req, res, next) {
     try {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        validationError(errors.errors);
+      }
+      await UserModel.checkEmail(req.body);
       const user = await UserModel.create(req.body);
-
       const token = await jwtGenerator.generateToken({
         id: user.id,
         email: user.email,
@@ -21,6 +26,10 @@ class userController {
 
   static async signIn(req, res, next) {
     try {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        validationError(errors.errors);
+      }
       const user = await UserModel.getUserByEmail(req.body);
       const token = await jwtGenerator.generateToken({
         id: user.id,

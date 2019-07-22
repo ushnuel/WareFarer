@@ -17,5 +17,7 @@ switch (process.env.NODE_ENV) {
     config.PORT = process.env.PORT || 3000;
     config.DB = process.env.DB;
 }
+config.PUBLIC_KEY = process.env.PUBLIC_KEY.replace(/\\n/g, '\n');
+config.PRIVATE_KEY = process.env.PRIVATE_KEY.replace(/\\n/g, '\n');
 
 export default config;

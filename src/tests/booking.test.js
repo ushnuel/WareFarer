@@ -65,7 +65,7 @@ describe('USER OR ADMIN BOOKING TESTS', () => {
     });
   });
 
-  xdescribe('User can delete his or her booking', () => {
+  describe('User can delete his or her booking', () => {
     it('DELETE /bookings/<:bookingId>/', (done) => {
       utils
         .delete(`${route}/bookings/${newBooking.id}`, booking)
@@ -113,7 +113,7 @@ describe('USER OR ADMIN BOOKING TESTS', () => {
     });
   });
 
-  describe('User can change seat number after booking', () => {
+  xdescribe('User can change seat number after booking', () => {
     it('PATCH /bookings/<:bookingId>/seat_number', (done) => {
       const newSeat = Number(newBooking.seat_number) + 1;
       const obj = { seat_number: newSeat };

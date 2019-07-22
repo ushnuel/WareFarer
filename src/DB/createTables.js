@@ -6,8 +6,8 @@ CREATE TABLE IF NOT EXISTS users
 (
     id bigserial NOT NULL,
     email character varying(250) NOT NULL,
-    first_name character varying(50) NOT NULL,
-    last_name character varying(50) NOT NULL,
+    first_name character varying(50),
+    last_name character varying(50),
     password character varying(100) NOT NULL,
     is_admin boolean DEFAULT FALSE,
     CONSTRAINT p_key PRIMARY KEY (id)
@@ -20,11 +20,11 @@ CREATE TABLE IF NOT EXISTS buses
 (
     id bigserial NOT NULL,
     user_id bigserial NOT NULL,
-    number_plate character varying(20) NOT NULL,
-    manufacturer character varying(30) NOT NULL,
+    number_plate character varying(20),
+    manufacturer character varying(30),
     model character varying(50) NOT NULL,
-    year character varying(15) NOT NULL,
-    capacity integer NOT NULL,
+    year character varying(15),
+    capacity integer,
     CONSTRAINT bus_key PRIMARY KEY (id),
     CONSTRAINT userfkey FOREIGN KEY (user_id)
         REFERENCES users (id)
@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS bookings
     user_id bigserial NOT NULL,
     bus_id bigserial NOT NULL,
     trip_id bigserial NOT NULL,
-    trip_date timestamp(6) with time zone,
+    trip_date timestamp(6) with time zone NOT NULL,
     seat_number integer,
     CONSTRAINT booking_pkey PRIMARY KEY (id),
     CONSTRAINT busfkey FOREIGN KEY (bus_id)
@@ -60,7 +60,7 @@ CREATE TABLE IF NOT EXISTS trips
     bus_id bigserial NOT NULL,
     origin character varying(100) NOT NULL,
     destination character varying(100) NOT NULL,
-    created_on timestamp(6) NOT NULL,
+    created_on timestamp(6),
     fare money NOT NULL,
     status character varying(50) DEFAULT 'active',    
     CONSTRAINT pkey PRIMARY KEY (id),

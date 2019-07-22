@@ -20,38 +20,36 @@ export default class TripModel {
     RETURNING *
     `;
     const params = [user_id, bus_id, origin, destination, fare, created_on];
-    const trip = await DB.query(query, params);
+    const trip = await DB.query(query, params).catch((err) => {
+      throw new ErrorHandler(err.message, 400);
+    });
     return trip;
   }
 
   static async cancel(id) {
-    if (!id) {
-      throw new ErrorHandler('No trip found', 404);
-    }
     const query = `
     UPDATE trips
       SET status = 'cancelled'
       WHERE id = $1;
     `;
     const param = [id];
-    const trip = await DB.query(query, param);
+    const trip = await DB.query(query, param).catch(() => {
+      throw new ErrorHandler('failed to cancel trip', 400);
+    });
     return trip;
   }
 
   static async get(id) {
-    if (!id) {
-      throw new ErrorHandler('No trip found', 404);
-    }
     const query = `
     SELECT * FROM trips
       WHERE id = $1
     `;
     const param = [id];
-    const booking = await DB.query(query, param);
-    if (!booking) {
-      throw new ErrorHandler(`Fatal! No booking with id ${id} found`, 404);
+    const trip = await DB.query(query, param);
+    if (!trip) {
+      throw new ErrorHandler(`Trip with id ${id} not found`, 404);
     }
-    return booking;
+    return trip;
   }
 
   static async getAll() {

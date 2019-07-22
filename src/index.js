@@ -15,10 +15,9 @@ const app = express();
 app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-
 app.use(Routes);
-
 app.use('/api-docs', swaggerUiExpress.serve, swaggerUiExpress.setup(swaggerJson));
+
 app.get('/', (req, res) => res.json({
   message: 'Welcome to Warefarer server API homepage',
 }));

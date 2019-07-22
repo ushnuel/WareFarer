@@ -2,7 +2,7 @@
 class User {
   constructor() {
     this.user = {
-      email: 'usher@gmail.com',
+      email: 'usher@com',
       first_name: 'Emmanuel',
       last_name: 'Chinazom',
       password: 'ushermankellyy',
