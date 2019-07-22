@@ -12,7 +12,7 @@ import {
 chai.use(chaiHttp);
 should();
 
-const { user } = new User();
+const { admin1 } = new User();
 const utils = new Utils(server);
 const route = '/api/v1';
 let newBooking = {};
@@ -20,7 +20,7 @@ let newBooking = {};
 describe('USER OR ADMIN BOOKING TESTS', () => {
   before('Sign up as admin', (done) => {
     utils
-      .postUser(`${route}/auth/signup`, user)
+      .postUser(`${route}/auth/signup`, admin1)
       .then(() => {
         utils
           .post(`${route}/bus`, bus)
@@ -65,7 +65,7 @@ describe('USER OR ADMIN BOOKING TESTS', () => {
     });
   });
 
-  describe('User can delete his or her booking', () => {
+  xdescribe('User can delete his or her booking', () => {
     it('DELETE /bookings/<:bookingId>/', (done) => {
       utils
         .delete(`${route}/bookings/${newBooking.id}`, booking)
@@ -113,7 +113,7 @@ describe('USER OR ADMIN BOOKING TESTS', () => {
     });
   });
 
-  xdescribe('User can change seat number after booking', () => {
+  describe('User can change seat number after booking', () => {
     it('PATCH /bookings/<:bookingId>/seat_number', (done) => {
       const newSeat = Number(newBooking.seat_number) + 1;
       const obj = { seat_number: newSeat };
