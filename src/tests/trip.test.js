@@ -9,13 +9,13 @@ should();
 chai.use(chaiHttp);
 const route = '/api/v1';
 const utils = new Utils(server);
-const { user } = new User();
+const { admin } = new User();
 let newTrip = {};
 
 describe('ADMIN CREATE AND GET TRIP(S) TEST', () => {
   before('Create user account', (done) => {
     utils
-      .postUser(`${route}/auth/signup`, user)
+      .postUser(`${route}/auth/signup`, admin)
       .then(() => {
         utils
           .post(`${route}/bus`, bus)
