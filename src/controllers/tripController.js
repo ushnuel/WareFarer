@@ -1,13 +1,16 @@
-import { TripModel } from '../models';
-import { feedbackHandler, ErrorHandler } from '../Handlers';
+import { validationResult } from 'express-validator';
+import { TripModel, BusModel } from '../models';
+import { feedbackHandler, validationError } from '../Handlers';
 
-class tripController {
+export default class tripController {
   static async create(req, res, next) {
     try {
-      if (!req.user.isAdmin) {
-        throw new ErrorHandler('Forbidden access', 403);
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        validationError(errors.errors);
       }
-      const trip = await TripModel.create(req.body);
+      await BusModel.get(req.body);
+      const trip = await TripModel.create(req.user.id, req.body);
       const data = { ...trip };
       feedbackHandler.message(res, data, 201);
     } catch (error) {
@@ -15,13 +18,13 @@ class tripController {
     }
   }
 
-  static cancel(req, res, next) {
+  static async cancel(req, res, next) {
     try {
-      if (!req.user.isAdmin) {
-        throw new ErrorHandler('Forbidden access', 403);
-      }
-      const trip = TripModel.cancel(req.body.id);
-      feedbackHandler.message(res, trip);
+      await TripModel.get(req.params.tripId);
+      await TripModel.cancel(req.params.tripId);
+      const message = 'Trip cancelled successfully';
+      const data = { message };
+      feedbackHandler.message(res, data);
     } catch (error) {
       next(error);
     }
@@ -31,11 +34,9 @@ class tripController {
     try {
       const trips = await TripModel.getAll(req.query);
       const data = [...trips];
-      feedbackHandler.message(res, data, 200);
+      feedbackHandler.message(res, data);
     } catch (error) {
       next(error);
     }
   }
 }
-
-export default tripController;

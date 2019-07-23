@@ -1,6 +1,6 @@
 import chai from 'chai';
 
-class Utils {
+export default class Utils {
   constructor(server) {
     this.server = server;
   }
@@ -31,9 +31,23 @@ class Utils {
       .get(route)
       .auth(token, { type: 'bearer' })
       .query(obj);
+    return res;
+  }
 
+  async delete(route, obj, token = this.token) {
+    const res = await chai
+      .request(this.server)
+      .delete(route)
+      .auth(token, { type: 'bearer' });
+    return res;
+  }
+
+  async patch(route, obj, token = this.token) {
+    const res = await chai
+      .request(this.server)
+      .patch(route)
+      .auth(token, { type: 'bearer' })
+      .send(obj);
     return res;
   }
 }
-
-export default Utils;

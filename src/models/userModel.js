@@ -5,18 +5,14 @@ import { ErrorHandler } from '../Handlers';
 
 class UserModel {
   static async create({
-    email, first_name, last_name, password,
+    email, password, first_name, last_name, is_admin
   }) {
-    if (!(email && password)) {
-      throw new ErrorHandler('Enter email and password');
-    }
-    const is_admin = true;
     const query = `
     INSERT INTO users (
       email,
+      password,
       first_name,
       last_name,
-      password,
       is_admin
     )
     VALUES($1,$2,$3,$4,$5)
@@ -24,8 +20,10 @@ class UserModel {
     `;
 
     const hashedPassword = await bcrypt.hash(password, 15);
-    const params = [email, first_name, last_name, hashedPassword, is_admin];
-    const user = await DB.query(query, params);
+    const params = [email, hashedPassword, first_name, last_name, is_admin];
+    const user = await DB.query(query, params).catch((err) => {
+      throw new ErrorHandler(err.message, 400);
+    });
     return UserModel.exclude(user);
   }
 
@@ -48,18 +46,20 @@ class UserModel {
         email = $1`;
 
     const param = [email];
-    const user = await DB.query(query, param);
+    const user = await DB.query(query, param).catch(() => {
+      throw new ErrorHandler('User not found', 404);
+    });
     if (!user) {
-      throw new ErrorHandler('incorrect username or password');
+      throw new ErrorHandler('incorrect username or password', 404);
     }
     const isPassword = await bcrypt.compare(password, user.password);
     if (!isPassword) {
-      throw new ErrorHandler('incorrect username or password');
+      throw new ErrorHandler('incorrect username or password', 400);
     }
     return UserModel.exclude(user);
   }
 
-  static async emailExist(email) {
+  static async checkEmail({ email }) {
     const query = `
     SELECT * FROM users
       WHERE 
@@ -68,7 +68,7 @@ class UserModel {
     const param = [email];
     const user = await DB.query(query, param);
     if (user) {
-      throw new ErrorHandler('Email already exists', 401);
+      throw new ErrorHandler('Email already exists', 400);
     }
     return user;
   }

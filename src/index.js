@@ -1,36 +1,36 @@
-import express, { json, urlencoded } from 'express';
+import '@babel/polyfill';
+import express from 'express';
+import bodyParser from 'body-parser';
 import morgan from 'morgan';
-import Route from './routes';
+import swaggerUiExpress from 'swagger-ui-express';
+import Routes from './routes';
 import { ErrorHandler, feedbackHandler } from './Handlers';
+import config from './config';
+import swaggerJson from '../swagger.json';
+
+const debug = require('debug')('http');
 
 const app = express();
-const PORT = 3000;
 
 app.use(morgan('dev'));
-app.use(json());
-app.use(urlencoded({ extended: false }));
-
-app.use((req, res, next) => {
-  req.user = { id: 'an id' };
-  next();
-});
-
-app.use('/api/v1', Route);
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(Routes);
+app.use('/api-docs', swaggerUiExpress.serve, swaggerUiExpress.setup(swaggerJson));
 
 app.get('/', (req, res) => res.json({
-  id: req.user.id,
-  message: 'Welcome to Warefarer server API',
+  message: 'Welcome to Warefarer server API homepage',
 }));
 
 app.use('*', (req, res, next) => {
-  const error = new ErrorHandler('Not Found', 404);
+  const error = new ErrorHandler('Page Not Found', 404);
   next(error);
 });
 
 app.use(feedbackHandler.error);
-
-app.listen(PORT, () => {
-  console.log('app has started on ', PORT);
+app.set('port', config.PORT);
+app.listen(config.PORT, () => {
+  debug('app has started on', config.PORT);
 });
 
 export default app;
