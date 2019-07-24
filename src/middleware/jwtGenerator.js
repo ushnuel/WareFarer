@@ -1,9 +1,7 @@
 import jwt from 'jsonwebtoken';
-import fs from 'fs';
+import config from '../config';
 import { ErrorHandler } from '../Handlers';
 
-const privateKey = fs.readFileSync('./pvt.key', 'utf8');
-const publicKey = fs.readFileSync('./pub.key', 'utf8');
 const signInOptions = {
   expiresIn: '8h',
   algorithm: 'RS256',
@@ -11,7 +9,7 @@ const signInOptions = {
 
 class jwtGenerator {
   static generateToken(payload) {
-    return jwt.sign(payload, privateKey, signInOptions);
+    return jwt.sign(payload, config.PRIVATE_KEY, signInOptions);
   }
 
   static authorize(req, res, next) {
@@ -26,16 +24,25 @@ class jwtGenerator {
         );
       }
       if (jwtToken) {
-        jwt.verify(jwtToken, publicKey, (err, decoded) => {
+        jwt.verify(jwtToken, config.PUBLIC_KEY, (err, decoded) => {
           if (err) {
             throw new ErrorHandler('Authentication failed: Invalid token', 401);
           }
           req.user = decoded;
+
           next();
         });
       }
     } catch (error) {
       next(error);
+    }
+  }
+
+  static authorizeAdmin(req, res, next) {
+    if (!req.user.isAdmin) {
+      next(new ErrorHandler('Forbidden access!', 403));
+    } else {
+      next();
     }
   }
 }

@@ -1,9 +1,8 @@
 const bus = {
-  model: 'Peaguot',
+  model: 'Mini Bus',
   year: '2016',
-  manufacturer: 'Tesla',
+  manufacturer: 'Toyota',
   number_plate: '23475659lk',
-  capacity: 209,
+  capacity: 16,
 };
-
 export default bus;

@@ -1,9 +1,10 @@
 import express from 'express';
 import tripController from '../controllers/tripController';
+import { Validation } from '../middleware';
 
 const router = express.Router();
 
-router.post('/trips', tripController.create);
-router.get('/trips', tripController.getAll);
-
+router.post('/', Validation.tripValidator('create'), tripController.create);
+router.get('/', tripController.getAll);
+router.patch('/:tripId', tripController.cancel);
 export default router;
